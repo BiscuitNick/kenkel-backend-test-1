@@ -14,3 +14,10 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.box {
+  display: grid;
+  grid-auto-flow: row;
+
+  max-width: 500px;
+}
