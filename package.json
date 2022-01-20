@@ -8,13 +8,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "ajv": "^8.9.0",
     "bcryptjs": "^2.4.3",
     "mongodb": "^4.3.1",
     "next": "12.0.8",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "swr": "^1.1.2",
     "validator": "^13.7.0"
   },
   "devDependencies": {

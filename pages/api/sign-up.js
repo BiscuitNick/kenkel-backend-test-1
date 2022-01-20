@@ -1,6 +1,5 @@
 import normalizeEmail from "validator/lib/normalizeEmail";
 import bcrypt from "bcryptjs/dist/bcrypt";
-
 import { connectToDatabase } from "../../util/mongodb";
 
 async function insertUser(db, { name, email, password: unhashedPW }) {
@@ -32,9 +31,16 @@ export default async function handler(req, res) {
   if (!user) {
     try {
       user = await insertUser(db, { name, email, password });
-      res
-        .status(201)
-        .json({ message: "Successfully Created New Account", user });
+
+      // req.session.user = user;
+      // await req.session.save();
+
+      // res.send({ user: req.session.user });
+
+      res.status(201).json({
+        message: "Successfully Created New Account",
+        user,
+      });
     } catch (e) {
       console.log("insertUser Error", e.message);
       res.status(500).json({ message: e.message, user: null });

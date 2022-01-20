@@ -9,6 +9,9 @@ export const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  //
+  const [message, setMessage] = useState(null);
+
   const [user, setUser] = useUser();
 
   const onSubmit = useCallback(
@@ -28,8 +31,15 @@ export const Login = () => {
 
         const data = await response.json();
 
-        setUser(data.user);
+        if (data.user) {
+          setUser(data.user);
+          setMessage(null);
 
+          router.push("/dashboard");
+        } else {
+          setMessage(data.message);
+          //console.log(data);
+        }
         //console.log(data);
         // mutate({ user: response.user }, false);
         // console.log("YOUR ACCOUNT HAS BEEN CREATED");
@@ -44,6 +54,7 @@ export const Login = () => {
   );
 
   useEffect(() => {
+    console.log(user);
     if (user) {
       router.push("/dashboard");
     }
@@ -52,23 +63,28 @@ export const Login = () => {
   return (
     <div>
       <h1>SignIn</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          ref={emailRef}
-          autoComplete="email"
-          placeholder="Email Address"
-          required
-          type="email"
-        />
-        <input
-          ref={passwordRef}
-          autoComplete="new-password"
-          placeholder="Password"
-          required
-          type="password"
-        />
-        <input type="submit" value="LogIn" />
-      </form>
+      {message ? <div>{message}</div> : null}
+      {!isLoading && !user ? (
+        <form onSubmit={onSubmit}>
+          <input
+            ref={emailRef}
+            autoComplete="email"
+            placeholder="Email Address"
+            required
+            type="email"
+          />
+          <input
+            ref={passwordRef}
+            autoComplete="new-password"
+            placeholder="Password"
+            required
+            type="password"
+          />
+          <input type="submit" value="LogIn" />
+        </form>
+      ) : (
+        "loading..."
+      )}
     </div>
   );
 };
