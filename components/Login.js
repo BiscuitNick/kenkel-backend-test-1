@@ -1,6 +1,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useUser } from "../util/useUser";
+import Link from "next/link";
+import { useUser } from "../lib/useUser";
 
 export const Login = () => {
   const emailRef = useRef();
@@ -12,7 +13,7 @@ export const Login = () => {
   //
   const [message, setMessage] = useState(null);
 
-  const [user, setUser] = useUser();
+  const { user, mutateUser } = useUser(); //[user, setUser] = useUser();
 
   const onSubmit = useCallback(
     async (e) => {
@@ -31,19 +32,17 @@ export const Login = () => {
 
         const data = await response.json();
 
+        console.log(data);
+
         if (data.user) {
-          setUser(data.user);
+          // setUser(data.user);
+          mutateUser(data, false);
           setMessage(null);
 
           router.push("/dashboard");
         } else {
           setMessage(data.message);
-          //console.log(data);
         }
-        //console.log(data);
-        // mutate({ user: response.user }, false);
-        // console.log("YOUR ACCOUNT HAS BEEN CREATED");
-        // router.replace("/");
       } catch (e) {
         console.log(e.message);
       } finally {
@@ -54,18 +53,18 @@ export const Login = () => {
   );
 
   useEffect(() => {
-    console.log(user);
     if (user) {
       router.push("/dashboard");
     }
   }, [user]);
 
   return (
-    <div>
+    <div className="box">
       <h1>SignIn</h1>
       {message ? <div>{message}</div> : null}
       {!isLoading && !user ? (
         <form onSubmit={onSubmit}>
+          <label>Email</label>
           <input
             ref={emailRef}
             autoComplete="email"
@@ -73,6 +72,7 @@ export const Login = () => {
             required
             type="email"
           />
+          <label>Password</label>
           <input
             ref={passwordRef}
             autoComplete="new-password"
@@ -80,10 +80,22 @@ export const Login = () => {
             required
             type="password"
           />
-          <input type="submit" value="LogIn" />
+          <input className="button" type="submit" value="LogIn" />
+          <Link href="/signup">
+            <a
+              style={{
+                gridColumn: " 1 / 3",
+                textAlign: "center",
+                marginTop: 10,
+              }}
+              href="/signup"
+            >
+              Not registered? Signup Here.
+            </a>
+          </Link>
         </form>
       ) : (
-        "loading..."
+        "Authenticating..."
       )}
     </div>
   );

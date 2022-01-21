@@ -1,7 +1,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useUser } from "../util/useUser";
+import { useUser } from "../lib/useUser";
 
 export const SignUp = () => {
   const nameRef = useRef();
@@ -11,7 +11,8 @@ export const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const [user, setUser] = useUser();
+  const { user, mutateUser } = useUser();
+
   const [message, setMessage] = useState(null);
 
   const onSubmit = useCallback(
@@ -24,7 +25,7 @@ export const SignUp = () => {
           emailRef.current.value,
           passwordRef.current.value
         );
-        const response = await fetch("/api/sign-up", {
+        const response = await fetch("/api/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -36,20 +37,16 @@ export const SignUp = () => {
 
         const data = await response.json();
 
+        console.log(data);
+
         if (data.user) {
-          setUser(data.user);
+          mutateUser(data, false); // asign to useUser (prevents need to login after creating account)
           setMessage(null);
 
           router.push("/dashboard");
         } else {
           setMessage(data.message);
-          //console.log(data);
         }
-
-        //console.log(data);
-        // mutate({ user: response.user }, false);
-        // console.log("YOUR ACCOUNT HAS BEEN CREATED");
-        // router.replace("/");
       } catch (e) {
         console.log(e.message);
       } finally {
@@ -60,28 +57,21 @@ export const SignUp = () => {
   );
 
   useEffect(() => {
-    //SignOut if active user (we assume user wants to create a new account if they are on this page)
     if (user) {
-      setUser(null);
+      router.push("/dashboard");
     }
-  }, []); //Empty dependecny array. Only run this effect once after initial render.
-
-  console.log(user);
+  }, [user]); //Empty dependecny array. Only run this effect once after initial render.
 
   return (
-    <div>
+    <div className="box">
       <h1>Create Account</h1>
 
-      {!isLoading && !user? (
+      {!isLoading && !user ? (
         <>
-          <form onSubmit={onSubmit} className={"box"}>
-            <input
-              ref={nameRef}
-              autoComplete="name"
-              placeholder="Your Name"
-              required
-            />
-
+          <form onSubmit={onSubmit}>
+            <label>Name</label>
+            <input ref={nameRef} placeholder="Your Name" required />
+            <label>Email</label>
             <input
               ref={emailRef}
               autoComplete="email"
@@ -89,6 +79,7 @@ export const SignUp = () => {
               required
               type="email"
             />
+            <label>Password</label>
             <input
               ref={passwordRef}
               autoComplete="new-password"
@@ -96,7 +87,7 @@ export const SignUp = () => {
               required
               type="password"
             />
-            <input type="submit" value="Register" />
+            <input className="button" type="submit" value="Register" />
           </form>
           {message ? (
             <>
@@ -110,7 +101,7 @@ export const SignUp = () => {
           ) : null}
         </>
       ) : (
-        "...Loading"
+        "...Creating Account"
       )}
     </div>
   );

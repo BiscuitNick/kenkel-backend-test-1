@@ -1,34 +1,36 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useUser } from "../util/useUser";
-import { SignOutButton } from "./SignOutButton";
+import { useUser } from "../lib/useUser";
+
+import Link from "next/link";
 
 export const Dashboard = () => {
-  const [user, setUser] = useUser();
   const router = useRouter();
-
-
+  const { user, logout } = useUser(); //[user, setUser] = useUser();
+  const [redirect, setRedirect] = useState("/login");
 
   useEffect(() => {
-    // if (!window) {
-    //   //cannot access window.sessionStorage if window object isn't loaded
-    //   return null;
-    // }
-
     if (!user) {
       console.log("You must login to continue");
-      router.push("/login");
+      router.push(redirect);
     }
+    console.log("14", user);
   }, [user]);
 
-  //   return !isReady ? (
-  //     <div>Loading...</div>
-  //   ) :
   return user ? (
-    <div>
-      <h1>Dashboard</h1>
-      <div>Welcome {user.name}!</div>
-      <SignOutButton setUser={setUser} />
+    <div className="box">
+      <h1>{user.name}'s Dashboard</h1>
+      <form>
+        <label>Name</label>
+        <div>{user.name}</div>
+        <label>Email</label>
+        <div>{user.email}</div>
+        <Link href={"/logout"}>
+          <button className="button" style={{ background: "red" }}>
+            Logout
+          </button>
+        </Link>
+      </form>
     </div>
   ) : (
     <div>
