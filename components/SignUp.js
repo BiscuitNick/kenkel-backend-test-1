@@ -72,7 +72,7 @@ export const SignUp = () => {
     <div>
       <h1>Create Account</h1>
 
-      {!isLoading && !user ? (
+      {!isLoading && !user? (
         <>
           <form onSubmit={onSubmit} className={"box"}>
             <input
