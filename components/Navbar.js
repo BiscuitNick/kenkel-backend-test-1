@@ -18,8 +18,8 @@ export const Navbar = () => {
         { href: "/logout", label: "Logout" },
       ];
 
-  const navitems = routes.map((r) => (
-    <Link href={r.href}>
+  const navitems = routes.map((r, i) => (
+    <Link href={r.href} key={i}>
       <a href={r.href}>{r.label}</a>
     </Link>
   ));
