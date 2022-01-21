@@ -10,7 +10,7 @@ export default function LogoutPage() {
     if (user) {
       logout();
     }
-  }, [user]);
+  }, [user, logout]);
 
   return (
     <Layout>

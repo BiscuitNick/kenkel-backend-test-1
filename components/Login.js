@@ -49,14 +49,14 @@ export const Login = () => {
         setIsLoading(false);
       }
     },
-    [router]
+    [router, mutateUser]
   );
 
   useEffect(() => {
     if (user) {
       router.push("/dashboard");
     }
-  }, [user]);
+  }, [user, router]);
 
   return (
     <div className="box">
@@ -88,7 +88,7 @@ export const Login = () => {
                 textAlign: "center",
                 marginTop: 10,
               }}
-              href="/signup"
+              // href="/signup"
             >
               Not registered? Signup Here.
             </a>

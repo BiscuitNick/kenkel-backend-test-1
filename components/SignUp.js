@@ -53,14 +53,14 @@ export const SignUp = () => {
         setIsLoading(false);
       }
     },
-    [router]
+    [router, mutateUser]
   );
 
   useEffect(() => {
     if (user) {
       router.push("/dashboard");
     }
-  }, [user]); //Empty dependecny array. Only run this effect once after initial render.
+  }, [user, router]); //Empty dependecny array. Only run this effect once after initial render.
 
   return (
     <div className="box">
