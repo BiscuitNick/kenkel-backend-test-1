@@ -9,7 +9,7 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
   var { email, password } = body;
 
   if (!email || !password) {
-    res.status(500).json({
+    res.status(400).json({
       message: "Missing email or password",
       user: null,
       body,
