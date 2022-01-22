@@ -23,4 +23,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag biscuitnick/kenkel-backend-test-1:$(date +%s)
     - name: Docker Push
-      run: docker push ${{secrets.DOCKER_USER}}/kenkel-backend-test-1
+      run: docker push biscuitnick/kenkel-backend-test-1
