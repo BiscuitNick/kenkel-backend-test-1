@@ -3,11 +3,18 @@ import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "../../lib/session";
 import { findUserByEmailandPassword } from "../../lib/user";
 
-
 export default withIronSessionApiRoute(async function loginRoute(req, res) {
   const { body } = req;
   const { db } = await connectToDatabase();
   var { email, password } = body;
+
+  if (!email || !password) {
+    res.status(500).json({
+      message: "Missing email or password",
+      user: null,
+      body,
+    });
+  }
 
   var user = await findUserByEmailandPassword(db, { email, password });
 

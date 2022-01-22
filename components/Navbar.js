@@ -1,24 +1,55 @@
 import Link from "next/link";
 import { useUser } from "../lib/useUser";
 
+const authRoutes = [
+  { href: "/", label: "Home" },
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/logout", label: "Logout" },
+  {
+    href: "https://github.com/BiscuitNick/kenkel-backend-test-1",
+    label: "Source",
+  },
+];
+const notAuthedRoutes = [
+  { href: "/", label: "Home" },
+  { href: "/login", label: "Login" },
+  { href: "/signup", label: "SignUp" },
+  {
+    href: "https://github.com/BiscuitNick/kenkel-backend-test-1",
+    label: "Source",
+  },
+];
+const allRoutes = [
+  { href: "/", label: "Home" },
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/login", label: "Login" },
+  { href: "/signup", label: "SignUp" },
+  { href: "/logout", label: "Logout" },
+  {
+    href: "https://github.com/BiscuitNick/kenkel-backend-test-1",
+    label: "Source",
+  },
+];
+const apiRoutes = [
+  { href: "/api/login", label: "Home" },
+  { href: "/api/logout", label: "Dashboard" },
+  { href: "/api/signup", label: "Login" },
+  { href: "/api/user", label: "SignUp" },
+];
+
+const routes = {
+  allRoutes,
+  authRoutes,
+  notAuthedRoutes,
+  apiRoutes,
+};
+
 export const Navbar = () => {
   const { user } = useUser();
 
-  const routes = !user
-    ? [
-        { href: "/", label: "Home" },
-        { href: "/login", label: "Login" },
-        { href: "/signup", label: "SignUp" },
-        { href: "/readme", label: "Documentation" },
-      ]
-    : [
-        { href: "/", label: "Home" },
-        { href: "/dashboard", label: "Dashboard" },
-        { href: "/readme", label: "Documentation" },
-        { href: "/logout", label: "Logout" },
-      ];
+  const navroutes = !user ? notAuthedRoutes : authRoutes;
 
-  const navitems = routes.map((r, i) => (
+  const navitems = navroutes.map((r, i) => (
     <Link href={r.href} key={i}>
       <a href={r.href}>{r.label}</a>
     </Link>
@@ -44,4 +75,14 @@ export const Navbar = () => {
       {navitems}
     </div>
   );
+};
+
+export const NavList = ({ routesKey = "allRoutes" }) => {
+  const navitems = routes[routesKey].map((r, i) => (
+    <Link href={r.href} key={i}>
+      <a href={r.href}>{r.label}</a>
+    </Link>
+  ));
+
+  return navitems;
 };

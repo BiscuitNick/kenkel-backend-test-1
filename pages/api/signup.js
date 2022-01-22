@@ -8,6 +8,14 @@ export default withIronSessionApiRoute(async function handler(req, res) {
   const { db } = await connectToDatabase();
   var { name, email, password } = body;
 
+  if (!name || email || password) {
+    res.status(500).json({
+      message: "Missing name email or password",
+      user: null,
+      body,
+    });
+  }
+
   var user = await findUserByEmail(db, email);
 
   if (!user) {

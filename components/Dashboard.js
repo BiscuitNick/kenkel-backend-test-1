@@ -19,7 +19,7 @@ export const Dashboard = () => {
 
   return user ? (
     <div className="box">
-      <h1>{user.name + `&apos;s Dashboard`} </h1>
+      <h1>{user.name} &apos;s Dashboard</h1>
       <form>
         <label>Name</label>
         <div>{user.name}</div>
