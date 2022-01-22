@@ -1,26 +1,23 @@
-Simple Authentication Backend
+# Simple Authentication Backend
 
-Use email & password to create account and sign in.
-User password is hashed and stored on Mongodb database.
-Cookie is used for authenticated state storage and persistence until session is expired.
+...
 
-User must be authenticated to access
-/dashboard
+- Use email & password to create account and sign in.
+- User password is hashed and stored on Mongodb database.
+- Cookie is used for authenticated state storage and persistence
 
-Unauthenticated users with be redirected to:
-/login
+User must be authenticated to access...
+/dashboard...
+...
+Unauthenticated users with be redirected to:...
+/login...
 
 ## Getting Started
 
+...
 This project was bootstrapped with the create next-app
-
-```bash
-npx create-next-app@latest
-# or
-yarn create next-app
-```
-
-To run this project locally:
+...
+To run this project locally:...
 First clone this project. From a command line run:
 
 ```bash
@@ -29,50 +26,59 @@ npm run dev
 yarn dev
 ```
 
-Set .env variables in .env.local file
-MONGODB_URI = pathToDatabase
-MONGODB_DB = nameOfDatabase
-SECRET_COOKIE_PASSWORD = atLeast32characterPasswordForSessionEncryption
+...
+Set .env variables in .env.local file...
+MONGODB_URI = pathToDatabase...
+MONGODB_DB = nameOfDatabase...
+SECRET_COOKIE_PASSWORD = at_Least_32_character_Password_For_Session_Encryption...
 
-Create free Mongodb database here:
+Generate Random Password...
+https://passwordsgenerator.net/
+...
+Create free Mongodb database here:...
 https://www.mongodb.com/
+...
 
 ## Project Dependencies
 
-# bcryptjs
+...
+
+### bcryptjs
 
 Used to encrypt password. Only the hashed version of a user's password is stored on database.  
 https://www.npmjs.com/package/bcrypt
 
-# iron-session
+### iron-session
 
 Creates session to establish authentication state persistence. Easy to configure cookie options.
 https://github.com/vvo/iron-session
 
-# swr
+### swr
 
 React hook for automatic data fetching & refreshing. Reads
 cookies by iron-session and helps maintain current auth state.
 https://swr.vercel.app/
 
-# mongodb
+### mongodb
 
 Api for Mongodb database. Used for creating and verifying user accounts.
 https://www.npmjs.com/package/mongodb
 
-# validator/normalizeEmail
+### validator/normalizeEmail
 
 Sanitizes email prior to database requests. Prevents multiple accounts with same email address from being created. ex: uSer@doMaIn.com becomes user@domain.com
 https://github.com/validatorjs/validator.js
 
-# next / react / react-dom
+### next / react / react-dom
 
 Nextjs: a framework for react built by vercel. Simplifies page routing and integrating backend.
 React / React-dom: dependencies for react library.
+...
 
 ## Project Map
 
-/components
+...
+/components...
 -Dashboard
 -Layout
 -Login
