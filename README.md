@@ -96,8 +96,9 @@ React / React-dom: dependencies for react library.
   /api
 
   - login (login via email and password, compares user pw against hashed database password)
-  - logout (destroy current session)
+  - logout (destroys current session)
   - signup (create new user account, inserts document into Database)
+    - requires email, password, and user in the body of the request
   - user (returns user session data)
     - useUser hooks listens to this route and updates/sets user object used for authenticate state
 
@@ -117,10 +118,12 @@ React / React-dom: dependencies for react library.
 - password : string
 
 Email is primary key and must be unique.  
-No rules set for name or password, except that they are each required fields when user registers account.
+No special rules set for name or password, except that they are each required fields when user registers account.
 
 Collection & created and rules are established in the util/mongodb.js file.
 
-Would set minimum password requirements if this were for production.
+Would set additional password requirements if this were for production.
 
 ## Deployments
+
+https://kenkel-backend-test-1.vercel.app/
