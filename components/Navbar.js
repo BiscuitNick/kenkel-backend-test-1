@@ -31,10 +31,10 @@ const allRoutes = [
   },
 ];
 const apiRoutes = [
-  { href: "/api/login", label: "Home" },
-  { href: "/api/logout", label: "Dashboard" },
-  { href: "/api/signup", label: "Login" },
-  { href: "/api/user", label: "SignUp" },
+  { href: "/api/login", label: "Login" },
+  { href: "/api/logout", label: "Logout" },
+  { href: "/api/signup", label: "Signup" },
+  { href: "/api/user", label: "User" },
 ];
 
 const routes = {
