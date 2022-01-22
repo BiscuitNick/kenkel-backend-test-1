@@ -111,9 +111,9 @@ React / React-dom: dependencies for react library.
 
 ## Database Schema
 
-name : string
-email : string, unique
-password : string
+- name : string  
+- email : string, unique  
+- password : string  
 
 Email is primary key and must be unique.  
 No rules set for name or password, except that they are each required fields when user registers account.
