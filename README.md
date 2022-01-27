@@ -34,6 +34,12 @@ https://passwordsgenerator.net/
 Create free Mongodb database here:  
 https://www.mongodb.com/
 
+## Docker
+
+To Run with docker.
+
+docker-compose up --build
+
 ## Project Dependencies
 
 ### bcryptjs
