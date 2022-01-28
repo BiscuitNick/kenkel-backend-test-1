@@ -105,7 +105,7 @@ export const SignUp = () => {
           </div>
         </>
       ) : (
-        <div>"loading..."</div>
+        <div>loading...</div>
       )}
     </div>
   );

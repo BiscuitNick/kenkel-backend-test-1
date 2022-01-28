@@ -45,11 +45,9 @@ const routes = {
 };
 
 export const Navbar = () => {
-  return null;
+  const { user, isLoggedIn } = useUser();
 
-  const { user } = useUser();
-
-  const navroutes = !user ? notAuthedRoutes : authRoutes;
+  const navroutes = isLoggedIn ? authRoutes : notAuthedRoutes;
 
   const navitems = navroutes.map((r, i) => (
     <Link href={r.href} key={i}>

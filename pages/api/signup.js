@@ -8,6 +8,9 @@ export default withIronSessionApiRoute(async function handler(req, res) {
   const { db } = await connectToDatabase();
 
   const cookie = await req.session.user;
+  var { name, email, password } = body;
+
+  console.log("api/signup", cookie, body);
 
   if (cookie) {
     res.status(200).json({
@@ -16,43 +19,44 @@ export default withIronSessionApiRoute(async function handler(req, res) {
       user: req.session.user,
       isLoggedIn: true,
     });
-  }
+  } else if (!name || !email || !password) {
+    req.session.user = null;
+    await req.session.save();
 
-  var { name, email, password } = body;
-
-  if (!name || !email || !password) {
     res.status(400).json({
       message: "Missing name email or password",
       user: null,
       isLoggedIn: false,
     });
-  }
+  } else {
+    var user = await findUserByEmail(db, email);
+    if (!user) {
+      try {
+        user = await insertUser(db, { name, email, password });
 
-  var user = await findUserByEmail(db, email);
+        req.session.user = user;
+        await req.session.save();
 
-  if (!user) {
-    try {
-      user = await insertUser(db, { name, email, password });
-
-      req.session.user = user;
+        res.status(201).json({
+          message: "Successfully Created New Account",
+          user: req.session.user,
+          isLoggedIn: true,
+        });
+      } catch (e) {
+        console.log("insertUser Error", e.message);
+        res
+          .status(500)
+          .json({ message: e.message, user: null, isLoggedIn: false });
+      }
+    } else {
+      req.session.user = null;
       await req.session.save();
 
-      res.status(201).json({
-        message: "Successfully Created New Account",
-        user: req.session.user,
-        isLoggedIn: true,
+      res.status(500).json({
+        message: "Email is already registered",
+        user: null,
+        isLoggedIn: false,
       });
-    } catch (e) {
-      console.log("insertUser Error", e.message);
-      res
-        .status(500)
-        .json({ message: e.message, user: null, isLoggedIn: false });
     }
-  } else {
-    res.status(500).json({
-      message: "Email is already registered",
-      user: null,
-      isLoggedIn: false,
-    });
   }
 }, sessionOptions);

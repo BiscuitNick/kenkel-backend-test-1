@@ -7,45 +7,42 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
   const { body } = req;
   const { db } = await connectToDatabase();
   const cookie = await req.session.user;
+  var { email, password } = body;
 
-  //Return Session Cookie if it already exists
+  console.log("api/login", cookie, body);
+
   if (cookie) {
-    console.log("12 cookie", cookie);
+    await req.session.save();
     res.status(200).json({
       user: cookie,
       isLoggedIn: true,
     });
-  }
-
-  var { email, password } = body;
-  if (!email || !password) {
-    res.status(400).json({
+  } else if (!email || !password) {
+    await req.session.save();
+    res.status(200).json({
       message: "Missing email or password",
       user: null,
       isLoggedIn: false,
       body,
     });
-  }
-
-  var user = await findUserByEmailandPassword(db, { email, password });
-
-  if (!user) {
-    req.session.user = null;
-    await req.session.save();
-
-    res.status(401).json({
-      message: "Invalid Email or Password",
-      user: null,
-      isLoggedIn: false,
-    });
   } else {
-    req.session.user = user;
-    await req.session.save();
-
-    res.status(200).json({
-      message: "Successfully LogedIn",
-      user: req.session.user,
-      isLoggedIn: true,
-    });
+    var user = await findUserByEmailandPassword(db, { email, password });
+    if (!user) {
+      req.session.user = null;
+      await req.session.save();
+      res.status(200).json({
+        message: "Invalid Email or Password",
+        user: null,
+        isLoggedIn: false,
+      });
+    } else {
+      req.session.user = user;
+      await req.session.save();
+      res.status(200).json({
+        message: "Successfully LogedIn",
+        user: req.session.user,
+        isLoggedIn: true,
+      });
+    }
   }
 }, sessionOptions);
