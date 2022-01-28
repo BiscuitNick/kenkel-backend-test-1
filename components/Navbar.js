@@ -45,6 +45,8 @@ const routes = {
 };
 
 export const Navbar = () => {
+  return null;
+
   const { user } = useUser();
 
   const navroutes = !user ? notAuthedRoutes : authRoutes;

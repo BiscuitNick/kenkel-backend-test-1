@@ -6,18 +6,19 @@ import Link from "next/link";
 
 export const Dashboard = () => {
   const router = useRouter();
-  const { user, logout } = useUser(); //[user, setUser] = useUser();
-  const [redirect, setRedirect] = useState("/login");
+  const { user, isLoggedIn, logout } = useUser(); //[user, setUser] = useUser();
 
   useEffect(() => {
-    if (!user) {
-      console.log("You must login to continue");
-      router.push(redirect);
+    if (isLoggedIn === false) {
+      const delayedRedirect = setTimeout(() => {
+        //console.log("This will run after 1 second!");
+        router.push("/login");
+      }, 3000);
+      return () => clearTimeout(delayedRedirect);
     }
-    console.log("14", user);
-  }, [user, redirect, router]);
+  }, [isLoggedIn]);
 
-  return user ? (
+  return isLoggedIn && user ? (
     <div className="box">
       <h1>{user.name} &apos;s Dashboard</h1>
       <form>
@@ -36,9 +37,11 @@ export const Dashboard = () => {
         </Link>
       </form>
     </div>
+  ) : isLoggedIn === null ? (
+    <div>Verifying Credentials...</div>
+  ) : isLoggedIn === false ? (
+    <div>Unauthorized Page. Will Redirect in 3 seconds</div>
   ) : (
-    <div>
-      Restricted Page. Must be logged in to access this page. Redirecting...
-    </div>
+    <div>Unexpected Error</div>
   );
 };

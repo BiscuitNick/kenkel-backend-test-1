@@ -8,10 +8,9 @@ export const SignUp = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const { user, mutateUser } = useUser();
+  const { user, isLoggedIn, mutateUser } = useUser();
 
   const [message, setMessage] = useState(null);
 
@@ -19,7 +18,6 @@ export const SignUp = () => {
     async (e) => {
       e.preventDefault();
       try {
-        setIsLoading(true);
         console.log(
           nameRef.current.value,
           emailRef.current.value,
@@ -41,32 +39,22 @@ export const SignUp = () => {
 
         if (data.user) {
           mutateUser(data, false); // asign to useUser (prevents need to login after creating account)
-          setMessage(null);
-
           router.push("/dashboard");
         } else {
           setMessage(data.message);
         }
       } catch (e) {
         console.log(e.message);
-      } finally {
-        setIsLoading(false);
       }
     },
     [router, mutateUser]
   );
 
-  useEffect(() => {
-    if (user) {
-      router.push("/dashboard");
-    }
-  }, [user, router]); //Empty dependecny array. Only run this effect once after initial render.
-
   return (
     <div className="box">
       <h1>Create Account</h1>
 
-      {!isLoading && !user ? (
+      {!isLoggedIn && !user ? (
         <>
           <form onSubmit={onSubmit}>
             <label>Name</label>
@@ -100,8 +88,24 @@ export const SignUp = () => {
             </>
           ) : null}
         </>
+      ) : isLoggedIn === true ? (
+        <>
+          <div>You are already signed in.</div>
+          <br />
+          <div>
+            <Link href="/logout">
+              <a>Logout first to create a new account</a>
+            </Link>
+          </div>
+          <br />
+          <div>
+            <Link href="/dashboard">
+              <a>View dashboard</a>
+            </Link>
+          </div>
+        </>
       ) : (
-        "...Creating Account"
+        <div>"loading..."</div>
       )}
     </div>
   );

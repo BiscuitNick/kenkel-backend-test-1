@@ -12,7 +12,14 @@ Unauthenticated users with be redirected to:
 
 ## Getting Started
 
-This project was bootstrapped with the create next-app  
+This project was bootstrapped with the create next-app
+
+To Run with docker. From a command line run:
+
+```bash
+docker-compose up --build
+```
+
 To run this project locally:
 
 First clone this project. From a command line run:
@@ -33,12 +40,6 @@ https://passwordsgenerator.net/
 
 Create free Mongodb database here:  
 https://www.mongodb.com/
-
-## Docker
-
-To Run with docker.
-
-docker-compose up --build
 
 ## Project Dependencies
 

@@ -32,11 +32,14 @@ export const Login = () => {
 
         const data = await response.json();
 
-        console.log(data);
+        console.log(35, data);
 
         if (data.user) {
           // setUser(data.user);
-          mutateUser(data, false);
+
+          console.log(data.user);
+
+          mutateUser(data.user);
           setMessage(null);
 
           router.push("/dashboard");
